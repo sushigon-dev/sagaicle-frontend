@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="617.8396"
+   height="617.83698"
+   viewBox="0 0 617.8396 617.83697"
+   version="1.1"
+   xml:space="preserve"
+   style="clip-rule:evenodd;fill-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2"
+   id="svg6"
+   sodipodi:docname="default_avater_3.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview6"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1.01625"
+   inkscape:cx="307.99508"
+   inkscape:cy="307.50308"
+   inkscape:window-width="1920"
+   inkscape:window-height="1094"
+   inkscape:window-x="-11"
+   inkscape:window-y="-11"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g4" />
+    <g
+   transform="translate(-2174.8447,-900.71692)"
+   id="g5">
+        <g
+   transform="matrix(2.02015,0,0,2.02017,1796.24,252.584)"
+   id="g4">
+            <rect
+   x="142.327"
+   y="275.741"
+   width="396.01099"
+   height="396.01099"
+   style="fill:none"
+   id="rect1" />
+            <g
+   transform="matrix(0.495014,0,0,0.495007,-1818.69,-130.418)"
+   id="g1">
+                <circle
+   cx="4361.54"
+   cy="1220.52"
+   r="308.91901"
+   style="fill:url(#_Linear1)"
+   id="circle1" />
+            </g>
+            <g
+   transform="matrix(0.495014,0,0,0.495007,25.6434,-125.031)"
+   id="g2">
+                <path
+   d="m 425.719,1436.12 v -4.95 c 0,-79.69 64.698,-144.39 144.389,-144.39 h 131.221 c 79.691,0 144.39,64.7 144.39,144.39 v 4.95 c -55.141,51.15 -128.946,82.43 -210,82.43 -81.055,0 -154.86,-31.28 -210,-82.43 z"
+   style="fill:#ffffff"
+   id="path1" />
+            </g>
+            <g
+   transform="matrix(0.209098,0,0,0.209095,-571.657,182.797)"
+   id="g3">
+                <circle
+   cx="4361.54"
+   cy="1220.52"
+   r="308.91901"
+   style="fill:#ffffff"
+   id="circle2" />
+            </g>
+        </g>
+    </g>
+    <defs
+   id="defs6">
+        <linearGradient
+   id="_Linear1"
+   x1="0"
+   y1="0"
+   x2="1"
+   y2="0"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="matrix(800,-800.011,800.011,800,3961.54,1620.52)"><stop
+     offset="0"
+     style="stop-color:rgb(150,225,170);stop-opacity:1"
+     id="stop5" /><stop
+     offset="1"
+     style="stop-color:rgb(0,149,217);stop-opacity:1"
+     id="stop6" /></linearGradient>
+    </defs>
+</svg>

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
+import { AuthProvider } from "@/context/AuthContext";
+
+// Font Family: Noto Sans JP
 const notoSansJP = Noto_Sans_JP({
   weight: ["400", "700"],
   subsets: ["latin"],
@@ -21,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSansJP.className} antialiased`}>{children}</body>
+      <body className={`${notoSansJP.className} antialiased bg-theme-yellow`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

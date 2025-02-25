@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSansJP.className} antialiased bg-theme-yellow`}>
+      <body className={`${notoSansJP.className} antialiased`}>
         <AuthProvider>
           <Header />
           <main className="pt-20">{children}</main>

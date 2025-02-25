@@ -10,12 +10,12 @@ function Header() {
   const { user, loading } = useAuth();
   //   const user = false;
   return (
-    <header className="fixed top-0 left-0 w-full bg-theme-yellow divide-y border-b-2 border-gray-300">
+    <header className="fixed top-0 left-0 w-full divide-y shadow-md bg-white z-10">
       <div className="flex justify-between items-center px-4 lg:px-6">
         <div className="flex items-center space-x-4 md:space-x-10 pt-2">
           <Link href="/">
             <Image
-              src="/logo/R-SNS.svg"
+              src="/logo/sagaicle_header_nobg.svg"
               alt="logo"
               width={40}
               height={40}

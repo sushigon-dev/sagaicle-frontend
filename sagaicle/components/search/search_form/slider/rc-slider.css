@@ -1,0 +1,19 @@
+/* デフォルトのハンドルに「つかむ」カーソルを設定 */
+.rc-slider-handle {
+  cursor: pointer;
+}
+
+/* ホバー時（カーソルがハンドルに乗ったとき）のデザイン */
+.rc-slider-handle:hover {
+  cursor: pointer;
+}
+
+/* クリック時（ドラッグ中）のデザイン */
+.rc-slider-handle:active {
+  cursor: pointer;
+}
+
+/* ラベルの位置を調整 */
+.rc-slider-mark-text:nth-of-type(even) {
+  transform: translate(-50%, -33px) !important;
+}

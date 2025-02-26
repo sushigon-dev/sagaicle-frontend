@@ -1,20 +1,25 @@
-"use client";
 import React from "react";
-import RouteCard from "@/components/search/route_card/RouteCard";
-import { RouteCardProps } from "@/components/search/route_card/RouteCard";
+import { twMerge } from "tailwind-merge";
+
+import RouteCard from "./RouteCard";
+import { RouteCardProps } from "./RouteCard";
 
 interface RouteCardContainerProps {
-  routes: RouteCardProps[]; // 複数のルートカードのプロパティを受け取る
+  routes: RouteCardProps[];
+  className?: string;
 }
 
-function RouteCardContainer({ routes }: RouteCardContainerProps) {
+function RouteCardContainer({ routes, className }: RouteCardContainerProps) {
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {routes.map((route) => (
-        <RouteCard key={route.id} {...route} />
+    <div
+      className={twMerge("flex flex-wrap justify-start gap-6 p-4", className)}
+    >
+      {routes.map((route, index) => (
+        <RouteCard key={index} {...route} />
       ))}
     </div>
   );
 }
 
 export default RouteCardContainer;
+export type { RouteCardContainerProps };

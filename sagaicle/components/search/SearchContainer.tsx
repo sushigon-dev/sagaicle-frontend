@@ -1,32 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { backendAPI } from "@/lib/api";
+"use client";
 
-import Search from "./Search";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { Route } from "@/types";
+import { backendAPI } from "@/lib/api";
+import { Searching } from "@/components/common/loading/";
+import SearchForm from "./search_form/SearchForm";
+import RouteCardContainer from "./route_card/RouteCardContainer";
 
 const LIMIT = 10;
 
-type RouteInfo = {
-  id: number;
-  title: string;
-  description: string;
-  distance_km: number;
-  estimated_time_m: number;
+type TagsResponseData = {
+  display_error_message: string;
   tags: string[];
-  likes: number;
-  image_url: string;
 };
 
-type ResponseData = {
-  hit_num: number;
-  routes: RouteInfo[];
+type SearchResponseData = {
+  display_error_message: string;
+  hit_count: number;
+  routes: Route[];
 };
 
-type PostData = {
+type SearchRequestData = {
   distance: {
     min: number;
     max: number;
   };
-  estimated_time: {
+  time: {
     min: number;
     max: number;
   };
@@ -41,54 +42,140 @@ type PostData = {
 
 function SearchContainer() {
   // 検索可能なタグ名
-  // TODO: SSR で取得する？
-  const [tagNames, setTagNames] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const initialTag = searchParams.get("tag");
+
+  const [tagNames, setTagNames] = useState<string[] | null>(null);
 
   // 検索条件
-  const [distanceMin, setDistanceMin] = useState<number>(0);
-  const [distanceMax, setDistanceMax] = useState<number>(0);
-  const [estimatedTimeMin, setEstimatedTimeMin] = useState<number>(0);
-  const [estimatedTimeMax, setEstimatedTimeMax] = useState<number>(0);
+  const [distanceRange, setDistanceRange] = useState<[number, number]>([0, 5]);
+  const [timeRange, setTimeRange] = useState<[number, number]>([60, 90]);
   const [tags, setTags] = useState<string[]>([]);
   const [searchOption, setSearchOption] = useState<"AND" | "OR">("OR");
   const [sortByKey, setSortByKey] = useState<
     "distance" | "time" | "likes" | "update_at"
   >("likes");
-  const [sortByOrder, setSortByOrder] = useState<"asc" | "desc">("asc");
+  const [sortByOrder, setSortByOrder] = useState<"asc" | "desc">("desc");
 
   // 検索結果
-  const [hitNum, setHitNum] = useState<number | null>(null);
-  const [result, setResult] = useState<RouteInfo[] | null>(null);
+  const [hitCount, setHitCount] = useState<number | null>(null);
+  const [result, setResult] = useState<Route[] | null>(null);
+
+  // ローディング中の表示
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchTagNames = async () => {
-      try {
-        const res = await fetch(backendAPI("/tags"));
+    if (initialTag) {
+      setTags(() => [initialTag]);
+    }
 
-        if (res.ok) {
-          const data = await res.json();
-          setTagNames(data);
-        } else {
-          console.error("Failed to fetch tag names");
-        }
-      } catch (error) {
-        console.error("Error fetching tag names:", error);
+    const fetchTagNames = async () => {
+      setTagNames(() => ["おっぱい", "tag2", "tag3", "tag4", "tag5"]);
+      return;
+      const response = await fetch(backendAPI("/api/tags"), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data: TagsResponseData = await response.json();
+      if (!response.ok) {
+        console.error("Error:", data.display_error_message);
+        return;
       }
+      setTagNames(() => data.tags);
     };
     fetchTagNames();
   }, []);
 
   useEffect(() => {
+    const test = [
+      {
+        id: "1",
+        title: "美しい山道のサイクリング",
+        description:
+          "新鮮な海鮮から、絶景の海原、自然の雄大さ、サイクリング旅行のいいところを詰め合わせたようなサイクリングコースです！",
+        distance: 10,
+        time: 30,
+        tags: [
+          "山道",
+          "絶景",
+          "チャレンジ",
+          "おっぱい",
+          "JK",
+          "チャレンジ",
+          "山道",
+          "絶景",
+          "チャレンジ",
+        ],
+        likes: 10,
+        image: "/test/test_image_01.webp",
+        update: "2021/10/01",
+      },
+      {
+        id: "2",
+        title: "タイトル2",
+        description: "説明2",
+        distance: 20.4,
+        time: 60,
+        tags: ["タグ3", "タグ4"],
+        likes: 20,
+        image: "/test/test_image_02.jpeg",
+        update: "2021/10/02",
+      },
+      {
+        id: "2",
+        title: "タイトル2",
+        description: "説明2",
+        distance: 20.4,
+        time: 60,
+        tags: ["タグ3", "タグ4"],
+        likes: 20,
+        image: "/test/test_image_02.jpeg",
+        update: "2021/10/02",
+      },
+      {
+        id: "2",
+        title: "タイトル2",
+        description: "説明2",
+        distance: 20.4,
+        time: 60,
+        tags: ["タグ3", "タグ4"],
+        likes: 20,
+        image: "/test/test_image_02.jpeg",
+        update: "2021/10/02",
+      },
+      {
+        id: "2",
+        title: "タイトル2",
+        description: "説明2",
+        distance: 20.4,
+        time: 60,
+        tags: ["タグ3", "タグ4"],
+        likes: 20,
+        image: "/test/test_image_02.jpeg",
+        update: "2021/10/02",
+      },
+    ];
+    setResult(() => test);
+    setHitCount(() => test.length);
+    setIsLoading(() => true);
+    setTimeout(() => {
+      setIsLoading(() => false);
+    }, 3000);
+    return;
+
     const handler = setTimeout(() => {
+      setIsLoading(() => true);
       const handleSearchCondition = async () => {
-        const postData: PostData = {
+        const postData: SearchRequestData = {
           distance: {
-            min: distanceMin,
-            max: distanceMax,
+            min: distanceRange[0],
+            max: distanceRange[1],
           },
-          estimated_time: {
-            min: estimatedTimeMin,
-            max: estimatedTimeMax,
+          time: {
+            min: timeRange[0],
+            max: timeRange[1],
           },
           tags: tags,
           search_option: searchOption,
@@ -98,58 +185,55 @@ function SearchContainer() {
           },
           limit: LIMIT,
         };
-        // TODO: 通信処理を書く
-        try {
-          const res = await fetch(backendAPI("/search"), {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(postData),
-          });
-          const data: ResponseData = await res.json();
-          setHitNum(data.hit_num);
-          setResult(data.routes);
-        } catch (error) {
-        } finally {
+
+        const response = await fetch(backendAPI("/api/search"), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        });
+        const data: SearchResponseData = await response.json();
+        if (!response.ok) {
+          console.error("Error:", data.display_error_message);
           clearTimeout(handler);
+          return;
         }
+
+        setHitCount(() => data.hit_count);
+        setResult(() => data.routes);
+
+        clearTimeout(handler);
       };
       handleSearchCondition();
+      setIsLoading(() => false);
     }, 2000); // Wait for 2 seconds before sending the request
 
     return () => clearTimeout(handler);
-  }, [
-    distanceMin,
-    distanceMax,
-    estimatedTimeMin,
-    estimatedTimeMax,
-    tags,
-    searchOption,
-    sortByKey,
-    sortByOrder,
-  ]);
+  }, [distanceRange, timeRange, tags, searchOption, sortByKey, sortByOrder]);
 
   return (
-    <Search
-      tagNames={tagNames}
-      distanceMin={distanceMin}
-      distanceMax={distanceMax}
-      estimatedTimeMin={estimatedTimeMin}
-      estimatedTimeMax={estimatedTimeMax}
-      tags={tags}
-      searchOption={searchOption}
-      sortByKey={sortByKey}
-      sortByOrder={sortByOrder}
-      setDistanceMin={setDistanceMin}
-      setDistanceMax={setDistanceMax}
-      setEstimatedTimeMin={setEstimatedTimeMin}
-      setEstimatedTimeMax={setEstimatedTimeMax}
-      setTags={setTags}
-      setSearchOption={setSearchOption}
-      setSortByKey={setSortByKey}
-      setSortByOrder={setSortByOrder}
-    />
+    <div className="flex flex-col md:flex-row p-4 gap-4">
+      <SearchForm
+        tagNames={tagNames}
+        distanceRange={distanceRange}
+        timeRange={timeRange}
+        tags={tags}
+        searchOption={searchOption}
+        sortByKey={sortByKey}
+        sortByOrder={sortByOrder}
+        setDistanceRange={setDistanceRange}
+        setTimeRange={setTimeRange}
+        setTags={setTags}
+        setSearchOption={setSearchOption}
+        setSortByKey={setSortByKey}
+        setSortByOrder={setSortByOrder}
+      />
+      {isLoading && <Searching className="w-full h-full m-auto" />}
+      {hitCount !== null && result !== null && !isLoading && (
+        <RouteCardContainer hitCount={hitCount} routes={result} />
+      )}
+    </div>
   );
 }
 

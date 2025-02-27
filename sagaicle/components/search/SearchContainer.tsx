@@ -70,7 +70,7 @@ function SearchContainer() {
     }
 
     const fetchTagNames = async () => {
-      setTagNames(() => ["おっぱい", "tag2", "tag3", "tag4", "tag5"]);
+      setTagNames(() => ["tag1", "tag2", "tag3", "tag4", "tag5"]);
       return;
       const response = await fetch(backendAPI("/api/tags"), {
         method: "GET",
@@ -101,8 +101,6 @@ function SearchContainer() {
           "山道",
           "絶景",
           "チャレンジ",
-          "おっぱい",
-          "JK",
           "チャレンジ",
           "山道",
           "絶景",

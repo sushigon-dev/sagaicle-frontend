@@ -47,7 +47,7 @@ function RouteCard({
       <div className="px-4 py-3 bg-theme-green font-bold text-theme-yellow text-lg">
         {shortenText(title, 20)}
       </div>
-      <Image
+      <img
         src={image}
         alt={title}
         width={640}

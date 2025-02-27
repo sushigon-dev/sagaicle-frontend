@@ -22,14 +22,6 @@ function Header() {
               className="w-32 m-2 mt-4"
             />
           </Link>
-          <nav className="flex items-center gap-4 text-sm pt-2">
-            <Link href="/about" className="font-medium text-theme-gray">
-              About
-            </Link>
-            <Link href="/about" className="font-medium text-theme-gray">
-              Help
-            </Link>
-          </nav>
         </div>
         <Link
           href="/auth/login"

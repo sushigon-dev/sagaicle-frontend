@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/context/AuthContext";
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 // Font Family: Noto Sans JP
 const notoSansJP = Noto_Sans_JP({
@@ -29,6 +30,7 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           <main className="pt-20">{children}</main>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

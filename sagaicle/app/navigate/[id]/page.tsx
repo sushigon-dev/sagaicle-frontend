@@ -4,6 +4,12 @@ import { backendAPI } from "@/lib/api";
 import NavigateMap from "@/components/navigate/NavigateMap";
 import type { Coordinate } from "@/components/navigate/NavigateMap";
 
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
 // チェックポイントの定義（例: 複数のチェックポイント）
 const checkpoints: Coordinate[] = [
   { lat: 35.6895, lng: 137.7 },
@@ -25,10 +31,10 @@ type ResponseData = {
 };
 
 async function fetchRoute(id: string): Promise<ResponseData> {
-  return {
-    route_path: routePath,
-    check_points: checkpoints,
-  };
+  // return {
+  //   route_path: routePath,
+  //   check_points: checkpoints,
+  // };
 
   const response = await fetch(backendAPI(`/api/route/${id}`), {
     method: "GET",
@@ -48,16 +54,29 @@ async function fetchRoute(id: string): Promise<ResponseData> {
   return data;
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: PageProps) {
+  const { id } = await params; // 非同期的に取得
   const route = await fetchRoute(params.id);
-
   return (
     <>
       <NavigateMap
-        routeId={params.id}
+        routeId={id}
         checkpoints={route.check_points}
         routePath={route.route_path}
       />
     </>
   );
 }
+
+// export default async function Page({ params }: { params: { id: string } }) {
+
+//   return (
+//     <>
+//       <NavigateMap
+//         routeId={params.id}
+//         checkpoints={route.check_points}
+//         routePath={route.route_path}
+//       />
+//     </>
+//   );
+// }

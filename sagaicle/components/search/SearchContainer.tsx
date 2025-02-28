@@ -44,10 +44,10 @@ function SearchContainer() {
   // 検索可能なタグ名
   const [initialTag, setInitialTag] = useState<string | null>(null);
 
-  useEffect(() => {
-    const searchParams = useSearchParams();
-    setInitialTag(() => searchParams.get("tag"));
-  }, []);
+  // useEffect(() => {
+  //   const searchParams = useSearchParams();
+  //   setInitialTag(() => searchParams.get("tag"));
+  // }, []);
 
   const [tagNames, setTagNames] = useState<string[] | null>(null);
 

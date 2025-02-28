@@ -9,6 +9,10 @@ type ResponseData = {
   route_detail: RouteDetail;
 };
 
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
+
 const testData: RouteDetail = {
   title: "美しい山道のサイクリング",
   description: "自然豊かな山道を走る爽快なルートです。",
@@ -50,13 +54,14 @@ async function fetchDetail(id: string) {
   return data.route_detail;
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const detail = await fetchDetail(params.id);
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+  const detail = await fetchDetail(id);
 
   return (
     <>
       <Detail
-        id={params.id}
+        id={id}
         title={detail.title}
         description={detail.description}
         fullDisctiption={detail.full_description}

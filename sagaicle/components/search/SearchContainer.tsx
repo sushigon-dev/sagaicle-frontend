@@ -42,8 +42,12 @@ type SearchRequestData = {
 
 function SearchContainer() {
   // 検索可能なタグ名
-  const searchParams = useSearchParams();
-  const initialTag = searchParams.get("tag");
+  const [initialTag, setInitialTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    const searchParams = useSearchParams();
+    setInitialTag(() => searchParams.get("tag"));
+  }, []);
 
   const [tagNames, setTagNames] = useState<string[] | null>(null);
 

@@ -30,14 +30,14 @@ function Profile() {
   useEffect(() => {
     setUserName(() => "ほげほげ男");
     setbadgedRoutes(() => [
-      { id: "1", name: "test1" },
-      { id: "2", name: "test2" },
-      { id: "3", name: "test3" },
+      { id: "1", name: "歴史と温泉めぐりコース" },
+      { id: "2", name: "朝市と神社、温泉の贅沢サイクリングコース" },
+      { id: "3", name: "海と橋、絶景と温泉を巡るサイクリングコース" },
     ]);
     setLikedRoutes(() => [
-      { id: "1", name: "test1" },
-      { id: "2", name: "test2" },
-      { id: "3", name: "test3" },
+      { id: "1", name: "歴史と温泉めぐりコース" },
+      { id: "2", name: "歴史とグルメを楽しむ唐津サイクリングコース" },
+      { id: "3", name: "温泉と絶景を巡る贅沢サイクリングツアー" },
     ]);
     setMileage(() => 100);
     setTotalDistance(() => 1000);

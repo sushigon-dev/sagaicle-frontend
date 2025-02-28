@@ -40,6 +40,17 @@ type SearchRequestData = {
   limit: number;
 };
 
+function shuffleArray(arr: any[]) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    // 0以上i以下のランダムなインデックスを生成
+    const j = Math.floor(Math.random() * (i + 1));
+
+    // 要素を交換
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function SearchContainer() {
   // 検索可能なタグ名
   const [initialTag, setInitialTag] = useState<string | null>(null);
@@ -241,7 +252,7 @@ function SearchContainer() {
       },
     ];
 
-    setResult(() => test);
+    setResult(() => shuffleArray(test));
     setHitCount(() => test.length);
     setIsLoading(() => true);
     setTimeout(() => {

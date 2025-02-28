@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaUser, FaRegUser } from "react-icons/fa";
-
+import { MdPostAdd } from "react-icons/md";
 import { useAuth } from "@/context/AuthContext";
 
 function Header() {
@@ -23,22 +23,32 @@ function Header() {
             />
           </Link>
         </div>
-        <Link
-          href="/auth/login"
-          className="flex flex-col items-center px-3 mt-4 mb-2"
-        >
+        <div className="flex items-center justify-end space-x-4 md:space-x-10 pt-2">
+          <Link
+            href="/newpost"
+            className="flex flex-col items-center mt-4 mb-2"
+          >
+            <MdPostAdd className="text-2xl text-theme-gray" />
+            <span className="text-xs text-theme-gray">Post</span>
+          </Link>
           {user ? (
-            <>
+            <Link
+              href="/profile"
+              className="flex flex-col items-center mt-4 mb-2"
+            >
               <FaUser className="text-2xl text-theme-gray" />
               <span className="text-sm text-theme-gray">Profile</span>
-            </>
+            </Link>
           ) : (
-            <>
+            <Link
+              href="/auth/login"
+              className="flex flex-col items-center mt-4 mb-2"
+            >
               <FaRegUser className="text-2xl text-theme-gray" />
               <span className="text-xs text-theme-gray">Login</span>
-            </>
+            </Link>
           )}
-        </Link>
+        </div>
       </div>
     </header>
   );

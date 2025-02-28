@@ -31,6 +31,7 @@ interface NavigateMapProps {
 const radius = 20;
 
 function NavigateMap({ routeId, checkpoints, routePath }: NavigateMapProps) {
+  const [scaledSize, setScaledSize] = useState<google.maps.Size | null>(null);
   const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
     null
   );
@@ -57,6 +58,14 @@ function NavigateMap({ routeId, checkpoints, routePath }: NavigateMapProps) {
 
       return () => navigator.geolocation.clearWatch(watchId);
     }
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (typeof window !== "undefined" && google.maps) {
+        setScaledSize(new google.maps.Size(30, 30));
+      }
+    }, 1000);
   }, []);
 
   // 現在地が更新されたときに、チェックポイントとの距離を計算
@@ -142,7 +151,7 @@ function NavigateMap({ routeId, checkpoints, routePath }: NavigateMapProps) {
             position={{ lat: cp.lat, lng: cp.lng }}
             icon={{
               url: "/navigate_marker/checkpoint.svg", // 任意のカスタムアイコン（public フォルダに配置）
-              scaledSize: { width: 30, height: 30 },
+              scaledSize: scaledSize ?? undefined,
             }}
           />
         ))}
@@ -152,7 +161,7 @@ function NavigateMap({ routeId, checkpoints, routePath }: NavigateMapProps) {
           position={routePath[routePath.length - 1]}
           icon={{
             url: "/navigate_marker/goal.svg",
-            scaledSize: { width: 30, height: 30 },
+            scaledSize: scaledSize ?? undefined,
           }}
         />
 

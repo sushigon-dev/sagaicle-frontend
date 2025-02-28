@@ -4,6 +4,10 @@ import { backendAPI } from "@/lib/api";
 import NavigateMap from "@/components/navigate/NavigateMap";
 import type { Coordinate } from "@/components/navigate/NavigateMap";
 
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
+
 // チェックポイントの定義（例: 複数のチェックポイント）
 const checkpoints: Coordinate[] = [
   { lat: 35.6895, lng: 137.7 },
@@ -48,13 +52,13 @@ async function fetchRoute(id: string): Promise<ResponseData> {
   return data;
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const route = await fetchRoute(params.id);
-
+export default async function Page({ params }: PageProps) {
+  const { id } = await params; // 非同期的に取得
+  const route = await fetchRoute(id);
   return (
     <>
       <NavigateMap
-        routeId={params.id}
+        routeId={id}
         checkpoints={route.check_points}
         routePath={route.route_path}
       />

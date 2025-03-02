@@ -4,7 +4,7 @@ import type {
   AuthRequest,
   AuthResponse,
   LogoutResponse,
-  WhoameResponse,
+  WhoamiResponse,
 } from "../types";
 
 // POST /api/auth/register
@@ -80,14 +80,14 @@ async function logout(): Promise<LogoutResponse> {
 }
 
 // GET /api/auth/me
-async function whoame(): Promise<WhoameResponse> {
+async function whoami(): Promise<WhoamiResponse> {
   try {
     const response = await fetch(backendAPI("/api/auth/me"), {
       method: "GET",
       credentials: "include",
     });
 
-    const data: WhoameResponse = await response.json();
+    const data: WhoamiResponse = await response.json();
     if (!response.ok) {
       throw new Error(
         `HTTP Error: ${response.status} - ${response.statusText}`
@@ -100,4 +100,4 @@ async function whoame(): Promise<WhoameResponse> {
   }
 }
 
-export { register, login, logout, whoame };
+export { register, login, logout, whoami };

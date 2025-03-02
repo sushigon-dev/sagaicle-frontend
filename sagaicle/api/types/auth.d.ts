@@ -23,11 +23,11 @@ type LogoutResponse = {
 };
 
 // GET /api/auth/me
-type WhoameResponse = {
+type WhoamiResponse = {
   user_id: schemas.UUID;
   user_name: string;
   token: string;
   error?: string;
 };
 
-export type { Auth, AuthRequest, AuthResponse, LogoutResponse, WhoameResponse };
+export type { Auth, AuthRequest, AuthResponse, LogoutResponse, WhoamiResponse };

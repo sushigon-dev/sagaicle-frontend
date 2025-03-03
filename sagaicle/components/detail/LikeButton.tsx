@@ -2,24 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { backendAPI } from "@/lib/api";
+
 import IconButton from "@/components/common/IconButton";
-
-type GetResponseData = {
-  display_error_message: string;
-  likes: number;
-  liked: boolean;
-};
-
-type PostResponseData = {
-  display_error_message: string;
-  likes: number;
-};
-
-type DeleteResponseData = {
-  display_error_message: string;
-  likes: number;
-};
+import * as api from "@/api/services";
 
 interface LikeButtonProps {
   id: string;
@@ -30,57 +15,33 @@ function LikeButton({ id }: LikeButtonProps) {
   const [liked, setLiked] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const fetchLiked = async () => {
-      const response = await fetch(backendAPI(`/api/user/likes/${id}`), {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data: GetResponseData = await response.json();
-      if (!response.ok) {
-        console.error("Error:", data.display_error_message);
-        return;
+    const fetchLikes = async () => {
+      try {
+        const result = await api.isLiked({ routeId: id });
+        setLikes(result.likes);
+        setLiked(result.is_liked);
+      } catch (error) {
+        setLikes(null);
+        setLiked(null);
       }
-      setLikes(data.likes);
-      setLiked(data.liked);
     };
-    fetchLiked();
+    fetchLikes();
   }, []);
 
   const handleLike = async () => {
-    const response = await fetch(backendAPI(`/api/user/likes/${id}`), {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data: PostResponseData = await response.json();
-    if (!response.ok) {
-      console.error("Error:", data.display_error_message);
-      return;
-    }
-    setLikes((pre) => (pre === null ? null : pre + 1));
-    setLiked((pre) => (pre === null ? null : true));
+    try {
+      const result = await api.like({ routeId: id });
+      setLikes(() => result.likes);
+      setLiked(() => true);
+    } catch (error) {}
   };
 
   const handleLikeDelete = async () => {
-    const response = await fetch(backendAPI(`/api/user/likes/${id}`), {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      console.error("Error:", data.display_error_message);
-      return;
-    }
-    setLikes((pre) => (pre === null ? null : pre - 1));
-    setLiked((pre) => (pre === null ? null : false));
+    try {
+      const result = await api.dislike({ routeId: id });
+      setLikes(() => result.likes);
+      setLiked(() => false);
+    } catch (error) {}
   };
 
   return (

@@ -1,4 +1,4 @@
-import { backendAPI } from "@/lib/api.js";
+import { backendAPI } from "@/lib/api";
 import type {
   SearchRoutes,
   SearchRoutesRequest,

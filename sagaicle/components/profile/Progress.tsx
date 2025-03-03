@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
-import { PieChart, Pie, Cell } from "recharts";
+import dynamic from "next/dynamic";
+import { Pie, Cell } from "recharts";
 import { motion } from "framer-motion";
 import { MdDirectionsBike } from "react-icons/md";
+
+// Unhandled Runtime Error回避のため動的インポート
+const PieChart = dynamic(() => import("recharts").then((mod) => mod.PieChart), {
+  ssr: false,
+});
 
 interface ProgressChartProps {
   current: number;
@@ -11,12 +17,12 @@ interface ProgressChartProps {
 const ProgressChart = ({ current, goal }: ProgressChartProps) => {
   const [size, setSize] = useState(200); // 初期サイズ
 
-  useEffect(() => {
-    const updateSize = () => {
-      const newSize = Math.min(Math.max(window.innerWidth * 0.4, 150), 300);
-      setSize(newSize);
-    };
+  const updateSize = () => {
+    const newSize = Math.min(Math.max(window.innerWidth * 0.4, 150), 300);
+    setSize(newSize);
+  };
 
+  useEffect(() => {
     updateSize(); // 初回実行
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);

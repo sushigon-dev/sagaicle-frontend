@@ -15,12 +15,17 @@ interface DetailProps {
   id: string;
   title: string;
   description: string;
-  fullDisctiption: string;
+  fullDescription: string;
   distance: number;
   time: number;
   tags: string[];
   images: string[];
   map: string;
+  checkpoints: {
+    name: string;
+    lat: number;
+    lng: number;
+  }[];
   update: string;
 }
 
@@ -28,12 +33,13 @@ function Detail({
   id,
   title,
   description,
-  fullDisctiption,
+  fullDescription,
   distance,
   time,
   tags,
   images,
   map,
+  checkpoints,
   update,
 }: DetailProps) {
   return (
@@ -78,13 +84,13 @@ function Detail({
             <h2 className="text-3xl text-theme-green font-bold">
               コースの説明
             </h2>
-            <p className="text-theme-gray">{fullDisctiption}</p>
+            <p className="text-theme-gray">{fullDescription}</p>
           </div>
           <div className="flex flex-col gap-2">
             <h2 className="text-3xl text-theme-green font-bold">
               チェックポイント
             </h2>
-            <Checkpoint id={id} className="p-4" />
+            <Checkpoint checkpoints={checkpoints} className="p-4" />
           </div>
           <div className="flex flex-wrap items-center justify-start gap-4">
             <LikeButton id={id} />

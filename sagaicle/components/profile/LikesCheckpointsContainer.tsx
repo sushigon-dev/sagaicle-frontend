@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 import { GiAchievement } from "react-icons/gi";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 import List from "./List";
 
 interface LikesCheckpointsContainerProps {
-  likedRoutes: { id: string; name: string }[];
-  badgedRoutes: { id: string; name: string }[];
+  likedRoutes: { id: string; title: string }[];
+  badgedRoutes: { id: string; title: string }[];
 }
 
 function LikesCheckpointsContainer({

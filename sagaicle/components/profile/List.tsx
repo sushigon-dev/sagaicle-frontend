@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface ListProps {
-  items: { id: string; name: string }[];
+  items: { id: string; title: string }[];
 }
 
 function List({ items }: ListProps) {
@@ -13,7 +13,7 @@ function List({ items }: ListProps) {
           href={`/route/${item.id}`}
           className="flex justify-start items-center w-80 md:w-[40vw] border-b border-theme-gray p-2 text-theme-green font-bold"
         >
-          {item.name}
+          {item.title}
         </Link>
       ))}
     </div>

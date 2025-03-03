@@ -5,4 +5,6 @@ function backendAPI(endpoint: string) {
   return `${BACKEND_API_URL}${cleanEndpoint}`;
 }
 
-export { backendAPI };
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
+
+export { backendAPI, GOOGLE_MAPS_API_KEY };

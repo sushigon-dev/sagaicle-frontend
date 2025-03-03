@@ -13,8 +13,6 @@ import * as api from "@/api/services";
 const LIMIT = 10;
 
 function SearchContainer() {
-  const searchParams = useSearchParams();
-
   // タグ一覧
   const [tagNames, setTagNames] = useState<schema.TagArray | null>(null);
 
@@ -72,6 +70,7 @@ function SearchContainer() {
 
   useEffect(() => {
     // クエリパラメータの取得
+    const searchParams = useSearchParams();
     const initialTag = searchParams.get("tag");
     if (initialTag) {
       setTags(() => [initialTag]);

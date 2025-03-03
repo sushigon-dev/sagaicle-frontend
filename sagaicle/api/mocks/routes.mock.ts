@@ -185,7 +185,10 @@ const getRouteResponse: GetRouteResponse = {
   tags: ["歴史探索", "温泉巡り", "家族向け"],
   likes: 37,
   images: [
-    "https://green.xgoo.jp/cdn/column/upload/img/thumbnail/walkerplus/walkerplus_1005949.jpg",
+    // "https://green.xgoo.jp/cdn/column/upload/img/thumbnail/walkerplus/walkerplus_1005949.jpg",
+    "/test/test_image_01.webp",
+    "/test/test_image_02.jpeg",
+    "/test/test_image_03.jpg",
   ],
   map: "https://example.com/map",
   checkpoints: [

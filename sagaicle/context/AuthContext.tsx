@@ -1,13 +1,11 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { backendAPI } from "@/lib/api";
 
-// 認証時のユーザー情報
-type User = {
-  id: string;
-  name: string;
-} | null;
+import * as api from "@/api/services";
+import { WhoamiResponse } from "@/api/types";
+
+type User = WhoamiResponse | null;
 
 type AuthContextType = {
   user: User;
@@ -27,15 +25,11 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUser = async () => {
+    setLoading(true);
     try {
-      const res = await fetch(backendAPI("/api/auth/me"), {
-        credentials: "include",
-      });
-      if (!res.ok) throw new Error("Not authenticated");
-      const data = await res.json();
-      setUser(data);
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
+      const result = await api.whoami();
+      setUser(result);
+    } catch (e) {
       setUser(null);
     } finally {
       setLoading(false);

@@ -19,7 +19,8 @@ import { OAuthButton } from "../oauth/OAuthButton";
 
 import formSchema from "./validation_rule";
 import { useAuth } from "@/context/AuthContext";
-import { backendAPI } from "@/lib/api";
+import * as api from "@/api/services";
+import { AuthRequest } from "@/api/types";
 
 interface LoginFormProps {
   registerLink?: string;
@@ -31,35 +32,26 @@ function LoginForm({ registerLink }: LoginFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { userName: "", password: "" },
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const postData = {
-      email: values.email?.trim(),
+      userName: values.userName?.trim(),
       password: values.password?.trim(),
     };
 
     console.log("Submitting Signin Data:", postData);
 
-    const res = await fetch(backendAPI("/api/auth/login"), {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
-
-    if (res.ok) {
-      window.location.reload();
-      console.log("Signin Success");
-    } else {
-      const data = await res.json();
-      console.log("Signin Failed:", data);
+    try {
+      await api.login(postData);
+      await fetchUser();
+      setTimeout(() => {
+        router.push("/search");
+      }, 2000);
+    } catch (error) {
+      form.setError("root", { message: "ログインに失敗しました。" });
     }
-
-    await fetchUser();
   };
 
   return (
@@ -71,14 +63,17 @@ function LoginForm({ registerLink }: LoginFormProps) {
         >
           <FormField
             control={form.control}
-            name="email"
+            name="userName"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="email" className="font-medium text-theme-gray">
-                  E-mail
+                <Label
+                  htmlFor="user-name"
+                  className="font-medium text-theme-gray"
+                >
+                  username
                 </Label>
                 <FormControl>
-                  <Input id="email" type="email" {...field} />
+                  <Input id="user-name" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -118,6 +113,11 @@ function LoginForm({ registerLink }: LoginFormProps) {
               </div>
             )}
           </div>
+          {form.formState.errors.root && (
+            <p className="mt-2 text-center text-sm text-red-600">
+              {form.formState.errors.root.message}
+            </p>
+          )}
         </form>
       </Form>
 

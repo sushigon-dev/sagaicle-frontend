@@ -3,8 +3,8 @@ import { Switch } from "@/components/ui/switch";
 import { twMerge } from "tailwind-merge";
 
 interface OptionToggleProps {
-  searchOption: "AND" | "OR";
-  setSearchOption: React.Dispatch<React.SetStateAction<"AND" | "OR">>;
+  searchOption: "AND" | "OR" | "NOT";
+  setSearchOption: React.Dispatch<React.SetStateAction<"AND" | "OR" | "NOT">>;
   className?: string;
 }
 

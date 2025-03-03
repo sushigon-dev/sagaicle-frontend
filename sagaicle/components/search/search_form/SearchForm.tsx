@@ -6,17 +6,17 @@ import SortKeySelector from "./SortKeySelector";
 import SortOrderSelector from "./SortOrderSelector";
 
 interface SearchParams {
-  tagNames: string[] | null;
+  tagNames: string[];
   distanceRange: [number, number];
   timeRange: [number, number];
   tags: string[];
-  searchOption: "AND" | "OR";
+  searchOption: "AND" | "OR" | "NOT";
   sortByKey: "distance" | "time" | "likes" | "update_at";
   sortByOrder: "asc" | "desc";
   setDistanceRange: React.Dispatch<React.SetStateAction<[number, number]>>;
   setTimeRange: React.Dispatch<React.SetStateAction<[number, number]>>;
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
-  setSearchOption: React.Dispatch<React.SetStateAction<"AND" | "OR">>;
+  setSearchOption: React.Dispatch<React.SetStateAction<"AND" | "OR" | "NOT">>;
   setSortByKey: React.Dispatch<
     React.SetStateAction<"distance" | "time" | "likes" | "update_at">
   >;

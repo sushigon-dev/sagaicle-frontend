@@ -1,7 +1,7 @@
 import type {
   GetVisitedCheckpointsResponse,
   VisitCheckpointsResponse,
-} from "@/api";
+} from "../types";
 
 const getVisitedCheckpointsResponse: GetVisitedCheckpointsResponse = {
   route_id: "12345678-1234-1234-1234-1234567890ab",

@@ -1,4 +1,4 @@
-import type { GetProfileResponse } from "@/api";
+import type { GetProfileResponse } from "../types";
 
 const getProfileResponse: GetProfileResponse = {
   user_name: "ほげほげ男",

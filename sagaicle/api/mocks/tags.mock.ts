@@ -1,4 +1,4 @@
-import { GetTagsResponse } from "@/api";
+import { GetTagsResponse } from "../types";
 
 const getTagsResponse: GetTagsResponse = {
   tags: [

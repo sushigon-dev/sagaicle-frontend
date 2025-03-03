@@ -1,4 +1,4 @@
-import type { AuthResponse, WhoamiResponse } from "@/api";
+import type { AuthResponse, WhoamiResponse } from "../types";
 
 const authResponse: AuthResponse = {
   user_name: "ほげほげ男",

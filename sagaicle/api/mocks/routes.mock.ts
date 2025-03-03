@@ -2,7 +2,7 @@ import type {
   SearchRoutesResponse,
   PostRouteResponse,
   GetRouteResponse,
-} from "@/api";
+} from "../types";
 
 const searchRoutesResponse: SearchRoutesResponse = {
   hit_count: 15,

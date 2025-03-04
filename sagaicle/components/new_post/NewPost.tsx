@@ -150,7 +150,7 @@ function NewPost() {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="tags"
             render={({ field }) => (
@@ -166,6 +166,12 @@ function NewPost() {
                 <FormMessage />
               </FormItem>
             )}
+          /> */}
+          <Label>タグを選択</Label>
+          <TagSelector
+            tagNames={tagNames ?? []}
+            tags={tags}
+            setTags={setTags}
           />
         </div>
 

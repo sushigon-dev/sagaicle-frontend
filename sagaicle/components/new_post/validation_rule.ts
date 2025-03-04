@@ -18,6 +18,14 @@ const formSchema = z.object({
     .string()
     .max(200, "詳細説明は60文字以内で入力してください")
     .min(1, "詳細説明を入力してください"),
+<<<<<<< HEAD
+  distance: z.string(),
+  time: z.string(),
+  tags: z
+    .string()
+    .min(1, "タグを入力してください")
+    .regex(/^([^,]+,)+[^,]+$/, "タグの形式が違います"),
+=======
   distance: z.number().min(0, "距離は0以上の値を入力してください"),
   time: z.number().int().min(0, "時間は0以上の値を入力してください"),
   // tags: z.array(z.string()).min(1, "タグを入力してください"),
@@ -26,6 +34,7 @@ const formSchema = z.object({
     .int()
     .max(20, "チェックポイントは20個以内で入力してください")
     .min(1, "チェックポイントを入力してください"),
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
   images: z
     .array(
       z.object({
@@ -47,6 +56,10 @@ const formSchema = z.object({
     .array(
       z.object({
         name: z.string().min(1, "チェックポイント名を入力してください"),
+<<<<<<< HEAD
+        lat: z.string(),
+        lng: z.string(),
+=======
         lat: z
           .number()
           .min(-90, "緯度は-90以上の値を入力してください")
@@ -55,6 +68,7 @@ const formSchema = z.object({
           .number()
           .min(-180, "経度は-180以上の値を入力してください")
           .max(180, "経度は180以下の値を入力してください"),
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
       })
     )
     .min(1, "少なくとも1つのチェックポイントを入力してください"),

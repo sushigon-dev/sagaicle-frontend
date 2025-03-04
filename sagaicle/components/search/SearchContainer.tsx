@@ -48,10 +48,10 @@ function SearchContainer() {
     const handleSearchCondition = async () => {
       try {
         const result = await api.searchRoutes({
-          distanceMin: distanceRange[0],
-          distanceMax: distanceRange[1],
-          timeMin: timeRange[0],
-          timeMax: timeRange[1],
+          distanceMin: distanceRange[0] == 0 ? -1 : distanceRange[0],
+          distanceMax: distanceRange[1] == 30 ? -1 : distanceRange[1],
+          timeMin: timeRange[0] == 0 ? -1 : timeRange[0],
+          timeMax: timeRange[1] == 300 ? -1 : timeRange[1],
           tags: tags,
           searchOption: searchOption,
           sortByKey: sortByKey,
@@ -81,6 +81,7 @@ function SearchContainer() {
   }, []);
 
   useEffect(() => {
+    if (isLoading) return;
     setIsLoading(() => true);
     return () => clearTimeout(handler);
   }, [distanceRange, timeRange, tags, searchOption, sortByKey, sortByOrder]);

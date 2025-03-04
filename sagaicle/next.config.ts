@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "sushigon-dev.github.io",
+        pathname: "/sagaicle-docs/images/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 
 import formSchema from "./validation_rule";
+<<<<<<< HEAD
 import { useEffect } from "react";
 import * as api from "@/api/services";
 function NewPost() {
@@ -32,10 +33,34 @@ function NewPost() {
       tags: "",
       images: [],
       map: "",
+=======
+import { useEffect, useState } from "react";
+import TagSelector from "../search/search_form/TagSelector";
+
+import * as api from "@/api/services";
+import * as schema from "@/api/schemas";
+
+function NewPost() {
+  const [tagNames, setTagNames] = useState<schema.TagArray | null>(null);
+  const [tags, setTags] = useState<schema.TagArray>([]);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: undefined,
+      description: undefined,
+      fullDescription: undefined,
+      distance: undefined,
+      time: undefined,
+      totalCheckpoints: undefined,
+      images: [],
+      map: undefined,
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
       checkpoints: [],
     },
   });
 
+<<<<<<< HEAD
   // const fetchTagNames = async () => {
   //   try {
   //     const result = await api.getTags();
@@ -49,6 +74,21 @@ function NewPost() {
     // fetchTagNames();
     imagesField.append({ url: "" });
     CheckpointsField.append({ name: "", lat: "", lng: "" });
+=======
+  const fetchTagNames = async () => {
+    try {
+      const result = await api.getTags();
+      setTagNames(() => result.tags);
+    } catch (error) {
+      setTagNames(() => null);
+    }
+  };
+
+  useEffect(() => {
+    fetchTagNames();
+    imagesField.append({ url: "" });
+    CheckpointsField.append({ name: "", lat: 0, lng: 0 });
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
   }, []);
 
   const imagesField = useFieldArray({
@@ -67,16 +107,27 @@ function NewPost() {
       title: values.title,
       description: values.description,
       fullDescription: values.fullDescription,
+<<<<<<< HEAD
       distance: parseFloat(values.distance),
       time: parseInt(values.time),
       tags: values.tags.replace(/\s/, "").split(","),
+=======
+      distance: values.distance,
+      time: values.time,
+      tags: tags,
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
       totalCheckpoints: values.checkpoints.length,
       images: values.images.map((image) => image.url),
       map: values.map,
       checkpoints: values.checkpoints.map((checkpoint) => ({
         name: checkpoint.name,
+<<<<<<< HEAD
         lat: parseFloat(checkpoint.lat),
         lng: parseFloat(checkpoint.lng),
+=======
+        lat: checkpoint.lat,
+        lng: checkpoint.lng,
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
       })),
     };
 
@@ -122,6 +173,7 @@ function NewPost() {
                 </Label>
                 <FormControl>
                   <Textarea id="description" {...field} className="h-12" />
+<<<<<<< HEAD
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -138,13 +190,17 @@ function NewPost() {
                 </Label>
                 <FormControl>
                   <Textarea id="full-discription" {...field} className="h-36" />
+=======
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
+<<<<<<< HEAD
             name="tags"
             render={({ field }) => (
               <FormItem className="text-theme-gray">
@@ -153,10 +209,43 @@ function NewPost() {
                 </Label>
                 <FormControl>
                   <Input id="tags" {...field} placeholder="例) 初心者向け,海" />
+=======
+            name="fullDescription"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="full-description" className="text-theme-gray">
+                  詳細説明
+                </Label>
+                <FormControl>
+                  <Textarea id="full-discription" {...field} className="h-36" />
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
+          />
+          {/* <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem className="text-theme-gray">
+                <Label>タグを選択</Label>
+                <FormControl>
+                  <TagSelector
+                    tagNames={tagNames ?? []}
+                    tags={tags}
+                    setTags={setTags}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+          <Label>タグを選択</Label>
+          <TagSelector
+            tagNames={tagNames ?? []}
+            tags={tags}
+            setTags={setTags}
           />
         </div>
 
@@ -314,7 +403,11 @@ function NewPost() {
           <Button
             type="button"
             onClick={() =>
+<<<<<<< HEAD
               CheckpointsField.append({ name: "", lat: "", lng: "" })
+=======
+              CheckpointsField.append({ name: "", lat: 0, lng: 0 })
+>>>>>>> 0fdaead91bf1c10d21d62ffa57455bbad68ca394
             } //追加ボタンを押すと、新しいチェックポイントを追加
             className="bg-theme-yellow text-theme-gray px-4 py-2 rounded hover:bg-theme-yellow"
           >

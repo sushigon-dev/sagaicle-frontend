@@ -39,7 +39,7 @@ function SearchForm({
   setSortByOrder,
 }: SearchParams) {
   return (
-    <div className="flex flex-col gap-12 text-theme-gray p-4 bg-theme-yellow rounded-lg">
+    <div className="flex flex-col gap-12 text-theme-gray p-4 bg-theme-yellow rounded-lg w-96">
       {/* <div className="flex flex-wrap gap-12"> */}
       <div className="flex flex-col gap-2">
         <span>走行距離</span>

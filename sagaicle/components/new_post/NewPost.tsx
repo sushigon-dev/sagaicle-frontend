@@ -1,8 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -20,86 +18,81 @@ import {
 } from "@/components/ui/form";
 
 import formSchema from "./validation_rule";
-import { useAuth } from "@/context/AuthContext";
-import { backendAPI } from "@/lib/api";
-import { useEffect, useState } from "react";
-import TagSelector from "../search/search_form/TagSelector";
-
-type GetRequestData = {
-  title: string;
-  description: string;
-  full_description: string;
-  distance: number;
-  time: number;
-  tags: string[];
-  total_checkpoints: number;
-  images: string[];
-  map: string;
-};
+import { useEffect } from "react";
+import * as api from "@/api/services";
 function NewPost() {
-  const [tagNames, setTagNames] = useState<string[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
-  const { user, loading, fetchUser } = useAuth();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
-      full_description: "",
-      distance: 0,
-      time: 0,
-      total_checkpoints: 0,
+      fullDescription: "",
+      distance: "",
+      time: "",
+      tags: "",
       images: [],
       map: "",
-      tags: [],
+      checkpoints: [],
     },
   });
 
+  // const fetchTagNames = async () => {
+  //   try {
+  //     const result = await api.getTags();
+  //     setTagNames(() => result.tags);
+  //   } catch (error) {
+  //     setTagNames(() => null);
+  //   }
+  // };
+
   useEffect(() => {
-    setTagNames(() => ["タグ1", "タグ2"]);
-    append({ url: "" });
+    // fetchTagNames();
+    imagesField.append({ url: "" });
+    CheckpointsField.append({ name: "", lat: "", lng: "" });
   }, []);
 
-  const { fields, append, remove } = useFieldArray({
+  const imagesField = useFieldArray({
     control: form.control,
     name: "images",
   });
 
+  const CheckpointsField = useFieldArray({
+    control: form.control,
+    name: "checkpoints",
+  });
+
   //フォーム送信時の処理
-  // const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-  //   const postData = {
-  //     email: values.email?.trim(),
-  //     password: values.password?.trim(),
-  //   };
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const postData = {
+      title: values.title,
+      description: values.description,
+      fullDescription: values.fullDescription,
+      distance: parseFloat(values.distance),
+      time: parseInt(values.time),
+      tags: values.tags.replace(/\s/, "").split(","),
+      totalCheckpoints: values.checkpoints.length,
+      images: values.images.map((image) => image.url),
+      map: values.map,
+      checkpoints: values.checkpoints.map((checkpoint) => ({
+        name: checkpoint.name,
+        lat: parseFloat(checkpoint.lat),
+        lng: parseFloat(checkpoint.lng),
+      })),
+    };
 
-  //   console.log("Submitting Signin Data:", postData);
-
-  //   const res = await fetch(backendAPI("/api/auth/login"), {
-  //     method: "POST",
-  //     credentials: "include",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(postData),
-  //   });
-
-  //   if (res.ok) {
-  //     window.location.reload();
-  //     console.log("Signin Success");
-  //   } else {
-  //     const data = await res.json();
-  //     console.log("Signin Failed:", data);
-  //   }
-
-  //   await fetchUser();
-  // };
+    try {
+      await api.postRoute(postData);
+      alert("投稿しました");
+    } catch (error) {
+      alert("投稿に失敗しました");
+    }
+  };
 
   return (
     <Form {...form}>
       <form
-        // onSubmit={}
-        className="m-2 w-80 md:w-full border border-theme-gray rounded-lg p-4 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-8"
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="w-80 md:w-full m-2 p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 border border-theme-gray rounded-lg"
       >
         {/*左列 */}
         <div className="flex flex-col gap-4">
@@ -108,7 +101,7 @@ function NewPost() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="title" className="font-medium text-theme-gray">
+                <Label htmlFor="title" className="text-theme-gray">
                   タイトル
                 </Label>
                 <FormControl>
@@ -118,19 +111,33 @@ function NewPost() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
-                <Label
-                  htmlFor="description"
-                  className="font-medium text-theme-gray"
-                >
+                <Label htmlFor="description" className="text-theme-gray">
                   ひとこと説明
                 </Label>
                 <FormControl>
-                  <Textarea id="description" {...field} className="h-24" />
+                  <Textarea id="description" {...field} className="h-12" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="fullDescription"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="full-description" className="text-theme-gray">
+                  詳細説明
+                </Label>
+                <FormControl>
+                  <Textarea id="full-discription" {...field} className="h-36" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -138,41 +145,36 @@ function NewPost() {
           />
           <FormField
             control={form.control}
-            name="full_description"
+            name="tags"
             render={({ field }) => (
-              <FormItem>
-                <Label
-                  htmlFor="full_description"
-                  className="font-medium text-theme-gray"
-                >
-                  詳細説明
+              <FormItem className="text-theme-gray">
+                <Label htmlFor="tags" className="text-theme-gray">
+                  タグを選択
                 </Label>
                 <FormControl>
-                  <Textarea id="full_discription" {...field} className="h-24" />
+                  <Input id="tags" {...field} placeholder="例) 初心者向け,海" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+
         {/*右列 */}
         <div className="flex flex-col gap-4">
-          <div className="flex gap-8">
+          <div className="flex items-center gap-8">
             <FormField
               control={form.control}
               name="distance"
               render={({ field }) => (
                 <FormItem>
-                  <Label
-                    htmlFor="distance"
-                    className="font-medium text-theme-gray w-full max-w-md"
-                  >
+                  <Label htmlFor="distance" className="text-theme-gray">
                     距離
                   </Label>
                   <FormControl>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
                       <Input id="distance" {...field} className="w-full" />
-                      <span className="ml-2 text-sm text-theme-gray">km</span>
+                      <span className="text-sm text-theme-gray">km</span>
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -186,14 +188,14 @@ function NewPost() {
                 <FormItem>
                   <Label
                     htmlFor="time"
-                    className="font-medium text-theme-gray w-full max-w-md"
+                    className="text-theme-gray w-full max-w-md"
                   >
                     所要時間
                   </Label>
                   <FormControl>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
                       <Input id="time" {...field} className="w-full" />
-                      <span className="ml-2 text-sm text-theme-gray">分</span>
+                      <span className="text-sm text-theme-gray">分</span>
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -202,40 +204,12 @@ function NewPost() {
             />
           </div>
 
-          <div className="font-medium text-theme-gray text-sm">タグ</div>
-          <TagSelector tagNames={tagNames} tags={tags} setTags={setTags} />
-
-          <FormField
-            control={form.control}
-            name="total_checkpoints"
-            render={({ field }) => (
-              <FormItem>
-                <Label
-                  htmlFor="total_checkpoints"
-                  className="font-medium text-theme-gray"
-                >
-                  チェックポイント
-                </Label>
-                <FormControl>
-                  <div className="flex items-center">
-                    <Input
-                      id="total_checkpoints"
-                      {...field}
-                      className="max-w-20"
-                    />
-                    <span className="ml-2 text-sm text-theme-gray">個</span>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="map"
             render={({ field }) => (
               <FormItem>
-                <Label htmlFor="map" className="font-medium text-theme-gray">
+                <Label htmlFor="map" className="text-theme-gray">
                   地図URL
                 </Label>
                 <FormControl>
@@ -245,9 +219,109 @@ function NewPost() {
               </FormItem>
             )}
           />
-        </div>
-        <div className="col-span-1 md:col-span-2 flex flex-col gap-4">
-          {fields.map((fieldItem, index) => (
+
+          <div className="flex flex-col gap-4 border border-theme-gray rounded-lg p-4">
+            {CheckpointsField.fields.map((fieldItem, index, array) => (
+              <div
+                key={fieldItem.id}
+                className={`flex flex-col gap-2 border-b border-theme-gray p-2 pt-0 ${
+                  index === array.length - 1 ? "border-none" : ""
+                }`}
+              >
+                <FormField
+                  control={form.control}
+                  name={`checkpoints.${index}.name`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label
+                        htmlFor={`checkpoints-${index}`}
+                        className="text-theme-gray"
+                      >
+                        チェックポイント {index + 1}
+                      </Label>
+                      <FormControl>
+                        <Input id={`checkpoints-${index}`} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex justify-between items-center gap-8">
+                  <FormField
+                    control={form.control}
+                    name={`checkpoints.${index}.lat`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label
+                          htmlFor={`checkpoints-${index}-lat`}
+                          className="text-theme-gray"
+                        >
+                          緯度
+                        </Label>
+                        <FormControl>
+                          <div className="flex items-center gap-2">
+                            <Input
+                              id={`checkpoints-${index}-lat`}
+                              {...field}
+                              className="w-full"
+                            />
+                            <span className="text-sm text-theme-gray">°</span>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    key={fieldItem.id}
+                    control={form.control}
+                    name={`checkpoints.${index}.lng`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label
+                          htmlFor={`checkpoints-${index}-lng`}
+                          className="text-theme-gray"
+                        >
+                          経度
+                        </Label>
+                        <FormControl>
+                          <div className="flex items-center gap-2">
+                            <Input
+                              id={`checkpoints-${index}-lng`}
+                              {...field}
+                              className="w-full"
+                            />
+                            <span className="text-sm text-theme-gray">°</span>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => CheckpointsField.remove(index)}
+                    className="bg-white border border-red-500 text-red-500 hover:bg-gray-50 transition-colors duration-200 mt-8 "
+                  >
+                    削除
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Button
+            type="button"
+            onClick={() =>
+              CheckpointsField.append({ name: "", lat: "", lng: "" })
+            } //追加ボタンを押すと、新しいチェックポイントを追加
+            className="bg-theme-yellow text-theme-gray px-4 py-2 rounded hover:bg-theme-yellow"
+          >
+            チェックポイントを追加
+          </Button>
+
+          {imagesField.fields.map((fieldItem, index) => (
             <FormField
               key={fieldItem.id}
               control={form.control}
@@ -258,7 +332,7 @@ function NewPost() {
                     htmlFor={`images-${index}`}
                     className="font-medium text-theme-gray"
                   >
-                    画像URL&emsp;{index + 1}
+                    画像URL {index + 1}
                   </Label>
                   <div className="flex items-center gap-4">
                     <FormControl>
@@ -270,8 +344,8 @@ function NewPost() {
                       <Button
                         type="button"
                         variant="destructive"
-                        onClick={() => remove(index)}
-                        className="bg-white border border-red-500 text-red-500 hover:bg-gray-50 transition-colors duration-200 "
+                        onClick={() => imagesField.remove(index)}
+                        className="bg-white border border-red-500 text-red-500 hover:bg-gray-50 transition-colors duration-200"
                       >
                         削除
                       </Button>
@@ -281,18 +355,17 @@ function NewPost() {
               )}
             />
           ))}
-
-          {/* フィールド数が6未満の場合のみ追加ボタンを表示 */}
-          {fields.length < 6 && (
-            <Button
-              type="button"
-              onClick={() => append({ url: "" })}
-              className="bg-theme-yellow text-theme-gray px-4 py-2 rounded hover:bg-theme-yellow"
-            >
-              画像URLを追加
-            </Button>
-          )}
+          <Button
+            type="button"
+            onClick={() => imagesField.append({ url: "" })}
+            className="bg-theme-yellow text-theme-gray px-4 py-2 rounded hover:bg-theme-yellow"
+          >
+            画像を追加
+          </Button>
         </div>
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "送信中..." : "投稿"}
+        </Button>
       </form>
     </Form>
   );
